@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+const exercises = null;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App exercises={exercises} />
   </React.StrictMode>,
   document.getElementById('root')
 );

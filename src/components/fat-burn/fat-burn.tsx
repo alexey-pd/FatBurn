@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import styled from '@emotion/styled'
+import React, {PureComponent} from 'react';
 
 interface Props {
     time: number,
@@ -8,9 +7,11 @@ interface Props {
 }
 
 interface State {
-    limit: string,
+    limit: number | null,
     text: string,
-    exercise: number
+    exercise: number,
+    started: boolean,
+    next: string
 }
 
 class FatBurn extends PureComponent<Props, State> {
@@ -18,24 +19,33 @@ class FatBurn extends PureComponent<Props, State> {
     private readonly _restTime: number;
     private _timeInt: any;
     private readonly _exercises: string[];
+
     constructor(props: Readonly<Props>) {
         super(props);
-        const { time, restTime, exercises } = this.props;
+        const {time, restTime, exercises} = this.props;
         this._time = time;
         this._restTime = restTime;
         this._exercises = exercises;
         this._timeInt = null;
         this.state = {
-            limit: '',
+            limit: null,
             text: '',
-            exercise: 0
+            exercise: 0,
+            started: false,
+            next: ''
         };
-        this._sport();
     }
+
     _write(limit: number, text: string) {
-        // @ts-ignore
-        this.setState({ limit, text });
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                limit,
+                text
+            }
+        });
     }
+
     _timer(time: number, header: string, callback: () => void) {
         let limit = time;
         this._timeInt = setInterval(() => {
@@ -48,13 +58,15 @@ class FatBurn extends PureComponent<Props, State> {
             this._write(limit, header);
         }, 1000);
     }
+
     _rest() {
         this._timer(this._restTime, 'Отдых', () => {
             this._sport();
         });
     }
+
     _sport() {
-        const { exercise } = this.state;
+        const {exercise} = this.state;
         if (exercise >= this._exercises.length) {
             this._write(0, 'УРА! Финиш!');
             return;
@@ -68,44 +80,30 @@ class FatBurn extends PureComponent<Props, State> {
             this._rest();
             return;
         });
+
+        const next = this._exercises[exercise + 1] || 'Финиш';
+
+        this.setState({ next })
     }
 
     render() {
-        const { limit, text } = this.state;
-        return limit && text ? (
-                <FatBurnStyled>
-                    <h1>{limit}</h1>
-                    <p>{text}</p>
-                </FatBurnStyled>
-        ) : (
-            <p>Упражнения не загружены</p>
+        const {limit, text, started, next} = this.state;
+
+        if (!started) {
+            return <button onClick={() => {
+                this.setState({ started: true });
+                this._sport()
+            }}>Начать тренировку</button>
+        }
+
+        return (
+            <>
+                <strong>{text}</strong>
+                <h1>{limit}</h1>
+                <p>{next}</p>
+            </>
         )
     }
 }
-
-const FatBurnStyled = styled.div`
-    background: #fff;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 40px;
-    font-size: 30px;
-    justify-content: space-between;
-    @media (min-width: 960px) {
-        font-size: 70px;
-    }
-    
-    button {
-        color: #fff;
-        background: green;
-        font-size: inherit;
-    }
-`;
 
 export default FatBurn
