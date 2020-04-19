@@ -17,6 +17,10 @@ const LayoutScreenStyled = styled.div`
     justify-content: space-between;
     @media (min-width: 960px) {
         font-size: 80px;
+        
+        strong {
+            min-height: 200px;
+        }
     }
     
     p {

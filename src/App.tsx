@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import FatBurn from "./components/fat-burn/fat-burn";
 import LayoutScreen from "./components/layout-screen/layout-screen";
 // eslint-disable-next-line no-restricted-globals
@@ -12,7 +12,7 @@ interface Props {
     exercises: string[] | null
 }
 
-class App extends React.Component<Props> {
+class App extends PureComponent<Props> {
     render() {
         const {exercises} = this.props;
 
