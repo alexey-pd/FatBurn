@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import ButtonControl from "../button-control/button-control";
 
 interface Props {
     time: number,
@@ -60,7 +61,7 @@ class FatBurn extends PureComponent<Props, State> {
     }
 
     _rest() {
-        this._timer(this._restTime, 'Отдых', () => {
+        this._timer(this._restTime, 'Rest', () => {
             this._sport();
         });
     }
@@ -68,7 +69,7 @@ class FatBurn extends PureComponent<Props, State> {
     _sport() {
         const {exercise} = this.state;
         if (exercise >= this._exercises.length) {
-            this._write(0, 'УРА! Финиш!');
+            this._write(0, 'Hooray! Finish!');
             return;
         }
 
@@ -81,7 +82,7 @@ class FatBurn extends PureComponent<Props, State> {
             return;
         });
 
-        const next = this._exercises[exercise + 1] || 'Финиш';
+        const next = this._exercises[exercise + 1] || 'Finish';
 
         this.setState({ next })
     }
@@ -90,10 +91,12 @@ class FatBurn extends PureComponent<Props, State> {
         const {limit, text, started, next} = this.state;
 
         if (!started) {
-            return <button onClick={() => {
-                this.setState({ started: true });
-                this._sport()
-            }}>Начать тренировку</button>
+            return (
+                <ButtonControl text="Train" onClick={() => {
+                    this.setState({ started: true });
+                    this._sport()
+                }} />
+            );
         }
 
         return (
