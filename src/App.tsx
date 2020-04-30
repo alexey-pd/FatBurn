@@ -8,27 +8,13 @@ const params = new Map(location.search.slice(1).split('&').map(kv => kv.split('=
 const sport = +params.get('sport');
 const rest = +params.get('rest');
 
-interface Props {
-    exercises: string[] | null
-}
-
-class App extends PureComponent<Props> {
+class App extends PureComponent {
     render() {
-        const {exercises} = this.props;
-
-        if (!exercises) {
-            return (
-                <LayoutScreen>
-                    <p>Упражнения не загружены</p>
-                </LayoutScreen>)
-        }
-
         return (
             <LayoutScreen>
                 <FatBurn
                     time={sport > 0 ? sport + 1 : 41}
                     restTime={rest > 0 ? rest + 1 : 21}
-                    exercises={exercises}
                 />
             </LayoutScreen>
         );

@@ -32,13 +32,6 @@ const LayoutScreenStyled = styled.div`
         line-height: 1;
         margin: 0;
     }
-    
-    button {
-        color: #fff;
-        background: green;
-        font-size: inherit;
-        margin: auto;
-    }
 `;
 
 interface Props {
